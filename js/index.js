@@ -7,7 +7,7 @@ getMovieList().then(response => {
 
 
 const MovieHtmlMaker = {
-  makeMovieContinaers : function(wrapper, movies) {
+  makeMovieContinaers : function(movies) {
     if (!movies?.length) {
       return '정보가 없습니다 :(';
     }
