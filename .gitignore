@@ -1,2 +1,8 @@
-memo
-temp
+# package directories
+node_modules
+
+#Environment Variables
+.env
+
+# 
+*.css.map
