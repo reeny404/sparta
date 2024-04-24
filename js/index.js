@@ -113,7 +113,7 @@ const MovieHtmlMaker = {
       : './asset/no-image.png'; 
 
     return `
-      <div class="movie-container">
+      <div class="movie-container clickable" attr-id="${movie.id}">
         <div class="movie-poster">
           <img src="${imagePath}">
         </div>
@@ -132,8 +132,15 @@ const movieDB = new MovieDatabase();
 const wrapper = document.querySelector('#App > .movie-list');
 function changeMovieListView(type, keyword) {
   getMovieList(type, keyword).then((movies) => {
-      const html = MovieHtmlMaker.makeAll(movies);
-      wrapper.innerHTML = html;
+    const html = MovieHtmlMaker.makeAll(movies);
+    wrapper.innerHTML = html;
+
+    wrapper.querySelectorAll('.movie-container')
+      .forEach(element => {
+        element.addEventListener('click', () => 
+          alert(`영화 id: ${element.attributes['attr-id'].value}`
+        ));
+      });
   });
 }
 
