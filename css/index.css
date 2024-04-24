@@ -1,5 +1,7 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap");
 #App {
+  font-family: "Gothic A1", sans-serif;
   width: 100%;
   height: 100%;
   text-align: center;
@@ -20,18 +22,34 @@
 }
 #App > .container > .logo > img {
   width: 100%;
+  max-width: 700px;
 }
 #App > .container > .search-box {
   display: flex;
+  width: 80%;
+  margin: auto;
 }
 #App > .container > .search-box > input#query {
-  font-size: 2rem;
+  font-size: 1.4rem;
   width: 100%;
-  border: 1px #D4D4D4 solid;
-  border-radius: 3px;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 1px #D4D4D4 solid;
+  outline: none;
+  text-indent: 0.5rem;
+  text-align: center;
+}
+#App > .container > .search-box > input#query::-moz-placeholder {
+  color: #dee2e6;
+}
+#App > .container > .search-box > input#query::placeholder {
+  color: #dee2e6;
 }
 #App > .container > .search-box > button.btn-search {
+  width: 100px;
   border: none;
+  border-radius: 5px;
+  margin-left: 5px;
 }
 #App > .container > .search-box > button.btn-search:before {
   content: "찾기";

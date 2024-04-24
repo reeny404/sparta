@@ -1,3 +1,6 @@
+/**
+ * API 호출 및 데이터 관리 
+ */
 class MovieDatabase {
   constructor(){
     this.key = 'bfc2b5b9ce28caed54a7db4ee4cc5cf4';
@@ -34,17 +37,24 @@ class MovieDatabase {
   }
 }
 
+// -------------------- start ------------------------ 
 const movieDB = new MovieDatabase();
 const wrapper = document.querySelector('#App > .movie-list');
 
+// 페이지 최초 로딩 시, 인기 영화 목록 보여주기
 movieDB.getPopuplarList()
   .then(response => {
     changeMovieListView(wrapper, response.results);
   });
 
+// 검색 창에 focus 주기
+const searchInput = document.getElementById('query'); 
+searchInput.focus();
+
+// 찾기 버튼 이벤트 걸기
 const button = document.querySelector('#App > .container > .search-box > button.btn-search');
 button.addEventListener('click', function() {
-  const keyword = document.getElementById('query').value;
+  const keyword = searchInput.value;
   if(!keyword){
     // 메세지 입력 안했을 때
     return;
@@ -58,7 +68,9 @@ button.addEventListener('click', function() {
       button.classList.remove(className);
     });
 });
+// -------------------- end ------------------------
 
+/** 영화 데이터 정보 변경되었을 때 view 변경하는 부분 */
 function changeMovieListView(wrapper, movies){
   const html = MovieHtmlMaker.makeAll(movies);
   wrapper.innerHTML = html;
