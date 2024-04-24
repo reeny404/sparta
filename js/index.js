@@ -1,24 +1,24 @@
 getMovieList().then(response => {
   const wrapper = document.querySelector('#App > .movie-list');
 
-  const html = MovieHtmlMaker.makeMovieContinaers(response.results);
+  const html = MovieHtmlMaker.makeAll(response.results);
   wrapper.innerHTML = html;
 });
 
 
 const MovieHtmlMaker = {
-  makeMovieContinaers : function(movies) {
+  makeAll : function(movies) {
     if (!movies?.length) {
       return '정보가 없습니다 :(';
     }
 
     let html = '';
     movies.map(movie => {
-      html += this.makeMovieHtml(movie);
+      html += this.makeOne(movie);
     });
     return html;
   },
-  makeMovieHtml : function (movie) {
+  makeOne : function (movie) {
     return `
       <div class="movie-container clickable">
         <div class="movie-poster">
