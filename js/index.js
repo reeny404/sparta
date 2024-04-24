@@ -86,11 +86,10 @@ class MovieDatabase {
   }
 
   /** 검색하기 */
-  async search(keyword, page) {
-    return fetch(`${this.urls.search}?${this.getParamQuery(page)}&query=${keyword}`, this.options)
-      .then(response => response.json())
-      .then(response => response.results)
-      .catch(err => console.error(err));
+  async search(keyword) {
+    const word = keyword.toLowerCase();
+
+    return this.lastPopularList.filter(movie => movie.title?.toLowerCase().includes(word));
   }
 }
 
@@ -131,7 +130,9 @@ const movieDB = new MovieDatabase();
 /** 영화 데이터 정보 변경되었을 때 view 변경하는 부분 */
 const wrapper = document.querySelector('#App > .movie-list');
 function changeMovieListView(type, keyword) {
+  console.log('hello');
   getMovieList(type, keyword).then((movies) => {
+    console.log(movies);
     const html = MovieHtmlMaker.makeAll(movies);
     wrapper.innerHTML = html;
 
