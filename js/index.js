@@ -20,12 +20,12 @@ const MovieHtmlMaker = {
   },
   makeMovieHtml : function (movie) {
     return `
-      <div class="movie-container">
+      <div class="movie-container clickable">
         <div class="movie-poster">
           <img src="https://image.tmdb.org/t/p/w500/${movie.backdrop_path}">
         </div>
         <div class="movie-content">
-          <div class="star">${movie.vote_average}</div>
+          <div class="star">${Math.floor(movie.vote_average* 10) / 10}</div>
           <div class="title">${movie.title}</div>
           <div class="desc">${movie.overview}</div>
         </div>

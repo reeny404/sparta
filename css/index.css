@@ -7,6 +7,9 @@
   margin: 0;
   padding: 1rem;
 }
+#App .clickable {
+  cursor: pointer;
+}
 #App > .container {
   padding-top: 30%;
   width: 100%;
@@ -14,6 +17,9 @@
 #App > .container > .logo {
   padding: 3rem 0;
   font-size: 3rem;
+}
+#App > .container > .logo > img {
+  width: 100%;
 }
 #App > .container > .search-box {
   display: flex;
@@ -28,13 +34,14 @@
   content: "찾기";
 }
 #App > .movie-list {
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   margin: 1rem 0;
 }
 #App > .movie-list > .movie-container {
-  margin: 0 5px;
-  width: 25%;
+  margin: 1rem 5px;
+  width: 20%;
 }
 #App > .movie-list > .movie-container > .movie-poster > img {
   width: 100%;
@@ -47,14 +54,15 @@
   left: 10px;
   top: -25px;
   background-color: #D4D4D4;
-  width: 2.3em;
-  height: 2.3em;
-  line-height: 2em;
+  width: 2em;
+  height: 2em;
+  line-height: 1.8em;
   border: 0;
   border-radius: 100%;
 }
 #App > .movie-list > .movie-container > .movie-content > .title {
-  padding: 1em 0;
+  padding: 0.5em 0;
+  font-weight: bold;
 }
 #App > .movie-list > .movie-container > .movie-content > .desc {
   text-overflow: ellipsis;
