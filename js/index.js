@@ -87,8 +87,11 @@ class MovieDatabase {
 
   /** 검색하기 */
   async search(keyword) {
-    const word = keyword.toLowerCase();
+    if (this.isChanged) {
+      await this.getPopuplarList();
+    }
 
+    const word = keyword.toLowerCase();
     return this.lastPopularList.filter(movie => movie.title?.toLowerCase().includes(word));
   }
 }
