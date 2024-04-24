@@ -130,9 +130,7 @@ const movieDB = new MovieDatabase();
 /** 영화 데이터 정보 변경되었을 때 view 변경하는 부분 */
 const wrapper = document.querySelector('#App > .movie-list');
 function changeMovieListView(type, keyword) {
-  console.log('hello');
   getMovieList(type, keyword).then((movies) => {
-    console.log(movies);
     const html = MovieHtmlMaker.makeAll(movies);
     wrapper.innerHTML = html;
 
@@ -148,6 +146,5 @@ function changeMovieListView(type, keyword) {
 async function getMovieList(type, keyword) {
   return type == POPULAR ? movieDB.getPopuplarList() : movieDB.search(keyword);
 }
-
 
 init();
