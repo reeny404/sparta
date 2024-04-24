@@ -12,8 +12,15 @@
 #App .clickable {
   cursor: pointer;
 }
+#App > .header {
+  height: 3rem;
+  text-align: right;
+}
+#App > .header > .language {
+  border: 1px #dee2e6 solid;
+  color: grey;
+}
 #App > .container {
-  padding-top: 30%;
   width: 100%;
 }
 #App > .container > .logo {
@@ -54,12 +61,6 @@
 #App > .container > .search-box > button.btn-search:before {
   content: "찾기";
 }
-#App > .container > .search-box > button.btn-search.searching {
-  pointer-events: none;
-}
-#App > .container > .search-box > button.btn-search.searching:before {
-  content: "loading";
-}
 #App > .movie-list {
   display: inline-flex;
   flex-wrap: wrap;
@@ -83,7 +84,7 @@
   background-color: #D4D4D4;
   width: 2em;
   height: 2em;
-  line-height: 1.8em;
+  line-height: 2em;
   border: 0;
   border-radius: 100%;
 }

@@ -1,3 +1,44 @@
+const POPULAR = 0;
+const SEARCH = 1;
+
+function init () {
+  // 페이지 최초 로딩 시, 인기 영화 목록 보여주기
+  changeMovieListView(POPULAR);
+
+  // 검색 창에 focus 주기
+  const searchInput = document.getElementById('query'); 
+  searchInput.focus();
+
+  // 찾기 버튼 이벤트 걸기
+  const submitButton = document.querySelector('#App > .container > .search-box > button.btn-search');
+  submitButton.addEventListener('click', () => {
+    if (searchInput.value) {
+      changeMovieListView(SEARCH, searchInput.value);
+    } else {
+      changeMovieListView(POPULAR);
+    }
+  });
+
+  searchInput.addEventListener('keyup', (e) =>{
+    // enter 쳤거나, input 값이 clear 되면 다시 인기 순으로
+    if (e.key == 'Enter' | !searchInput.value) {
+      submitButton.click();
+    }
+  });
+
+  //언어 선택 변경 시
+  const selectBox = document.getElementById('language'); 
+  selectBox.addEventListener('change', () => {
+    const lang = selectBox.options[selectBox.selectedIndex].value;
+    movieDB.setLanguage(lang);
+
+    // 화면 다시 그려야지
+    searchInput.value 
+      ? changeMovieListView(SEARCH, searchInput.value)
+      : changeMovieListView(POPULAR);
+  });
+}
+
 /**
  * API 호출 및 데이터 관리 
  */
@@ -16,64 +57,41 @@ class MovieDatabase {
       popular : 'https://api.themoviedb.org/3/movie/popular',
       search : 'https://api.themoviedb.org/3/search/movie'
     }
+
+    this.language = 'en-US';
+    this.isChanged = true;
+    this.lastPopularList = null;
   }
 
-  getParamQuery(page = 1, lang = 'en-US') {
-    return `api_key=${this.key}&language=${lang}&page=${page}`;
+  setLanguage(lang) {
+    this.language = lang;
+    this.isChanged = true;
+  }
+
+  getParamQuery(page = 1) {
+    return `api_key=${this.key}&language=${this.language}&page=${page}`;
   }
 
   /** 최초 페이지 로딩 시, 영화 인기차트 가져오기 */
-  async getPopuplarList() {
-    return fetch(`${this.urls.popular}?${this.getParamQuery()}`, this.options)
+  async getPopuplarList(page) {
+    if (!this.isChanged) {
+      return this.lastPopularList;
+    }
+
+    this.isChanged = false;
+    return fetch(`${this.urls.popular}?${this.getParamQuery(page)}`, this.options)
       .then(response => response.json())
+      .then(response => this.lastPopularList = response.results)
       .catch(err => console.error(err));
   }
 
   /** 검색하기 */
-  async search(keyword) {
-    return fetch(`${this.urls.search}?${this.getParamQuery()}&query=${keyword}`, this.options)
+  async search(keyword, page) {
+    return fetch(`${this.urls.search}?${this.getParamQuery(page)}&query=${keyword}`, this.options)
       .then(response => response.json())
+      .then(response => response.results)
       .catch(err => console.error(err));
   }
-}
-
-// -------------------- start ------------------------ 
-const movieDB = new MovieDatabase();
-const wrapper = document.querySelector('#App > .movie-list');
-
-// 페이지 최초 로딩 시, 인기 영화 목록 보여주기
-movieDB.getPopuplarList()
-  .then(response => {
-    changeMovieListView(wrapper, response.results);
-  });
-
-// 검색 창에 focus 주기
-const searchInput = document.getElementById('query'); 
-searchInput.focus();
-
-// 찾기 버튼 이벤트 걸기
-const button = document.querySelector('#App > .container > .search-box > button.btn-search');
-button.addEventListener('click', function() {
-  const keyword = searchInput.value;
-  if(!keyword){
-    // 메세지 입력 안했을 때
-    return;
-  }
-
-  const className = 'searching'
-  button.classList.add(className);
-  movieDB.search(keyword)
-    .then((response) => {
-      changeMovieListView(wrapper, response.results);
-      button.classList.remove(className);
-    });
-});
-// -------------------- end ------------------------
-
-/** 영화 데이터 정보 변경되었을 때 view 변경하는 부분 */
-function changeMovieListView(wrapper, movies){
-  const html = MovieHtmlMaker.makeAll(movies);
-  wrapper.innerHTML = html;
 }
 
 /** 영화 정보를 이용해 html view 만들기 */
@@ -107,3 +125,21 @@ const MovieHtmlMaker = {
       </div>`;
   }
 };
+
+const movieDB = new MovieDatabase();
+
+/** 영화 데이터 정보 변경되었을 때 view 변경하는 부분 */
+const wrapper = document.querySelector('#App > .movie-list');
+function changeMovieListView(type, keyword) {
+  getMovieList(type, keyword).then((movies) => {
+      const html = MovieHtmlMaker.makeAll(movies);
+      wrapper.innerHTML = html;
+  });
+}
+
+async function getMovieList(type, keyword) {
+  return type == POPULAR ? movieDB.getPopuplarList() : movieDB.search(keyword);
+}
+
+
+init();
