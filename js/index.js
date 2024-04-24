@@ -113,7 +113,7 @@ const MovieHtmlMaker = {
       : './asset/no-image.png'; 
 
     return `
-      <div class="movie-container clickable">
+      <div class="movie-container">
         <div class="movie-poster">
           <img src="${imagePath}">
         </div>
