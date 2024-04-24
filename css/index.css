@@ -30,8 +30,17 @@
   border: 1px #D4D4D4 solid;
   border-radius: 3px;
 }
+#App > .container > .search-box > button.btn-search {
+  border: none;
+}
 #App > .container > .search-box > button.btn-search:before {
   content: "찾기";
+}
+#App > .container > .search-box > button.btn-search.searching {
+  pointer-events: none;
+}
+#App > .container > .search-box > button.btn-search.searching:before {
+  content: "loading";
 }
 #App > .movie-list {
   display: inline-flex;

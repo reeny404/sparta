@@ -39,8 +39,18 @@
             }
 
             >button.btn-search {
+                border: none;
+
                 &:before {
                     content: '찾기';
+                }
+
+                &.searching {
+                    pointer-events: none;
+
+                    &:before {
+                        content: 'loading';
+                    }
                 }
             }
         }
